@@ -23,11 +23,11 @@ public class MainActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         FragmentManager recipeFragmentManager = getSupportFragmentManager();
-        RecipeMasterFragment recipeMasterFragment = new RecipeMasterFragment();
-
-        recipeFragmentManager.beginTransaction()
-                .add(R.id.recipe_list_master_fragment,recipeMasterFragment)
-                .commit();
+//        RecipeMasterFragment recipeMasterFragment = new RecipeMasterFragment();
+//
+//        recipeFragmentManager.beginTransaction()
+//                .add(R.id.recipe_list_master_fragment,recipeMasterFragment)
+//                .commit();
 
         //mainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
         //mainViewModel.fetchRecipeData(this);

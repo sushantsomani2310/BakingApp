@@ -20,7 +20,7 @@ import com.example.bakingapp.viewmodel.MainViewModel;
 
 import java.util.List;
 
-public class RecipeMasterFragment extends Fragment implements RecipeData.RecipeDataResponseListener{
+public class RecipeMasterFragment extends Fragment implements RecipeData.RecipeDataResponseListener,RecipeAdapter.ListItemClickListener{
 
     private RecyclerView recipeRecyclerView;
     private RecipeAdapter recipeAdapter;
@@ -30,12 +30,11 @@ public class RecipeMasterFragment extends Fragment implements RecipeData.RecipeD
 
     }
 
-    private View view;
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle bundle){
-        view = inflater.inflate(R.layout.fragment_master_list,container,false);
+        View view = inflater.inflate(R.layout.fragment_master_list,container,false);
         recipeRecyclerView = (RecyclerView) view.findViewById(R.id.recipe_recycler_view);
-        recipeAdapter = new RecipeAdapter();
+        recipeAdapter = new RecipeAdapter(this);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
         recipeRecyclerView.setLayoutManager(layoutManager);
         recipeRecyclerView.setAdapter(recipeAdapter);
@@ -47,12 +46,22 @@ public class RecipeMasterFragment extends Fragment implements RecipeData.RecipeD
 
     @Override
     public void onRecipeDataResponse(List<Recipe> recipesList) {
-        //TODO populate list in Recycler View here
+        //COMPLETED populate list in Recycler View here
+        recipeAdapter.setRecipeList(recipesList);
     }
 
     @Override
     public void onRecipeFetchError(String errorMessage) {
-        int sdf=45;
-       // Toast.makeText(this,"Oops: "+errorMessage,Toast.LENGTH_LONG).show();
+       //Toast.makeText(getC,"Oops: "+errorMessage,Toast.LENGTH_LONG).show();
+    }
+
+    /**
+     * handles item click on a recycler view
+     * @param selectedRecipe is the selected recipe by the user
+     */
+    @Override
+    public void onListItemClick(Recipe selectedRecipe) {
+        //TODO
+        int sdf=354;
     }
 }
