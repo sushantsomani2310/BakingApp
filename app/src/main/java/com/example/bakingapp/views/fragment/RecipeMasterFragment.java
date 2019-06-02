@@ -1,6 +1,7 @@
 package com.example.bakingapp.views.fragment;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -17,6 +18,7 @@ import com.example.bakingapp.datasource.RecipeAdapter;
 import com.example.bakingapp.datasource.RecipeData;
 import com.example.bakingapp.models.Recipe;
 import com.example.bakingapp.viewmodel.MainViewModel;
+import com.example.bakingapp.views.RecipeDetailActivity;
 
 import java.util.List;
 
@@ -61,7 +63,8 @@ public class RecipeMasterFragment extends Fragment implements RecipeData.RecipeD
      */
     @Override
     public void onListItemClick(Recipe selectedRecipe) {
-        //TODO
-        int sdf=354;
+        Intent recipeDetailsIntent = new Intent(getActivity(), RecipeDetailActivity.class);
+        recipeDetailsIntent.putExtra("RECIPE_DETAILS",selectedRecipe);
+        startActivity(recipeDetailsIntent);
     }
 }

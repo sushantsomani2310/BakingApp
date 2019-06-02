@@ -1,8 +1,13 @@
 package com.example.bakingapp.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
-public class RecipeSteps {
+import java.io.Serializable;
+
+public class RecipeSteps implements Serializable {
 
     @SerializedName("id")
     private int id;
@@ -46,4 +51,5 @@ public class RecipeSteps {
     public String getThumbnailURL() {
         return thumbnailURL;
     }
+
 }

@@ -2,7 +2,9 @@ package com.example.bakingapp.models;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Ingredients {
+import java.io.Serializable;
+
+public class Ingredients implements Serializable {
     @SerializedName("quantity")
     private float quantity;
 
