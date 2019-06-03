@@ -2,6 +2,8 @@ package com.example.bakingapp.views;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.ImageView;
 
 import com.example.bakingapp.R;
 import com.example.bakingapp.models.RecipeSteps;
@@ -14,6 +16,5 @@ public class RecipeVideoActivity extends AppCompatActivity {
     protected void onCreate(Bundle onSavedInstanceState){
         super.onCreate(onSavedInstanceState);
         setContentView(R.layout.recipe_video_fragment);
-
     }
 }

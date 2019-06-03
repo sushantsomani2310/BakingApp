@@ -7,7 +7,9 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.bakingapp.R;
 import com.example.bakingapp.models.RecipeSteps;
@@ -33,18 +35,21 @@ public class RecipeVideoFragment extends Fragment {
     private SimpleExoPlayerView playerView;
     private RecipeSteps currentStep;
     private TextView stepDescriptionTextView;
+    private ImageView nextStepImageView,prevStepImageView;
+    private boolean isLandscapeMode = false;
+    private int recipeStepIndex,numSteps;
+    private List<RecipeSteps> recipeSteps;
+    private View view;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle bundle){
-        View view = inflater.inflate(R.layout.recipe_video_layout,container,false);
+        view = inflater.inflate(R.layout.recipe_video_layout,container,false);
+        recipeSteps = (ArrayList<RecipeSteps>)getActivity().getIntent().getSerializableExtra("RECIPE_STEPS_LIST");
+        recipeStepIndex = getActivity().getIntent().getIntExtra("RECIPE_STEP_INDEX",1);
 
-        List<RecipeSteps> recipeSteps = (ArrayList<RecipeSteps>)getActivity().getIntent().getSerializableExtra("RECIPE_STEPS_LIST");
-        int recipeStepIndex = getActivity().getIntent().getIntExtra("RECIPE_STEP_INDEX",1);
-        currentStep = recipeSteps.get(recipeStepIndex);
+        numSteps = recipeSteps.size();
         playerView = view.findViewById(R.id.playerView);
-        stepDescriptionTextView = view.findViewById(R.id.step_instruction_textview);
-        if(!currentStep.getVideoURL().isEmpty()) initializePlayer(Uri.parse(currentStep.getVideoURL()));
-        stepDescriptionTextView.append(currentStep.getDescription());
+        setDescriptionContent();
         return view;
     }
 
@@ -80,5 +85,62 @@ public class RecipeVideoFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         releasePlayer();
+    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        if(!isLandscapeMode) {
+            nextStepImageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(recipeStepIndex>=numSteps){
+                        //show user that at the last step of recipe
+                        Toast.makeText(getContext(),"Recipe completed",Toast.LENGTH_LONG).show();
+                    }
+                    else{
+                        recipeStepIndex++;
+                        player=null;
+                        setDescriptionContent();
+                    }
+                }
+            });
+
+            prevStepImageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(recipeStepIndex==0){
+                        Toast.makeText(getContext(),"At first step",Toast.LENGTH_LONG).show();
+                    }
+                    else{
+                        recipeStepIndex--;
+                        player=null;
+                        setDescriptionContent();
+                    }
+                }
+            });
+        }
+    }
+
+    private void setDescriptionContent(){
+        currentStep = recipeSteps.get(recipeStepIndex);
+        if(!currentStep.getVideoURL().isEmpty()) initializePlayer(Uri.parse(currentStep.getVideoURL()));
+        else {
+            Toast.makeText(getContext(),"No video found",Toast.LENGTH_LONG).show();
+            player = null;
+            initializePlayer(Uri.parse(currentStep.getVideoURL()));
+        }
+        //implies that phone in landscape mode
+        if(view.findViewById(R.id.video_landscape_mode)!=null){
+            isLandscapeMode = true;
+        }
+        else{
+            isLandscapeMode = false;
+            stepDescriptionTextView = view.findViewById(R.id.step_instruction_textview);
+            stepDescriptionTextView.setText("");
+            stepDescriptionTextView.append(currentStep.getDescription());
+            nextStepImageView = view.findViewById(R.id.next_step_imageView);
+            prevStepImageView = view.findViewById(R.id.prev_step_imageView);
+        }
     }
 }
