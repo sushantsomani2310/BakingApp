@@ -17,7 +17,7 @@ public class RecipeStepsAdapter extends RecyclerView.Adapter<RecipeStepsAdapter.
     private StepSelectItemListener selectItemListener;
 
     public interface StepSelectItemListener{
-        void onStepSelectedListener(List<RecipeSteps> recipeSteps,int stepIndex);
+        void onStepSelectedListener(List<RecipeSteps> recipeSteps, int stepIndex);
     }
 
     public RecipeStepsAdapter(StepSelectItemListener selectItemListener){
@@ -46,7 +46,7 @@ public class RecipeStepsAdapter extends RecyclerView.Adapter<RecipeStepsAdapter.
 
     class RecipeStepsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private TextView stepDescriptionTextView;
-        public RecipeStepsViewHolder(View view){
+        private RecipeStepsViewHolder(View view){
             super(view);
             stepDescriptionTextView = (TextView)view.findViewById(R.id.recipe_step_desc_textview);
             view.setOnClickListener(this);

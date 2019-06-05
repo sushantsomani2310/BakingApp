@@ -1,4 +1,4 @@
-package com.example.bakingapp.views.fragment;
+package com.example.bakingapp.views.fragments;
 
 import android.net.Uri;
 import android.os.Bundle;
@@ -7,11 +7,11 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.bakingapp.R;
+import com.example.bakingapp.models.Recipe;
 import com.example.bakingapp.models.RecipeSteps;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlayerFactory;
@@ -29,26 +29,34 @@ import com.google.android.exoplayer2.util.Util;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RecipeVideoFragment extends Fragment {
+public class RecipeVideoStepFragment extends Fragment {
 
-    private SimpleExoPlayer player;
     private SimpleExoPlayerView playerView;
-    private RecipeSteps currentStep;
-    private TextView stepDescriptionTextView;
-    private ImageView nextStepImageView,prevStepImageView;
-    private boolean isLandscapeMode = false;
+    private SimpleExoPlayer player;
     private int recipeStepIndex,numSteps;
     private List<RecipeSteps> recipeSteps;
-    private View view;
+    private RecipeSteps currentStep;
+
+    public RecipeVideoStepFragment(){
+
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle bundle){
-        view = inflater.inflate(R.layout.recipe_video_layout,container,false);
+        View view = inflater.inflate(R.layout.exo_player_solo,container,false);
+
+        playerView = view.findViewById(R.id.playerView2);
+
         recipeSteps = (ArrayList<RecipeSteps>)getActivity().getIntent().getSerializableExtra("RECIPE_STEPS_LIST");
         recipeStepIndex = getActivity().getIntent().getIntExtra("RECIPE_STEP_INDEX",1);
 
-        numSteps = recipeSteps.size();
-        playerView = view.findViewById(R.id.playerView);
+        Recipe selectedRecipe = (Recipe)getActivity().getIntent().getSerializableExtra("RECIPE_DETAILS");
+
+        if(null==recipeSteps) {
+            recipeSteps = selectedRecipe.getRecipeSteps();
+        }
+        currentStep = recipeSteps.get(recipeStepIndex);
+        //numSteps = recipeSteps.size();
         setDescriptionContent();
         return view;
     }
@@ -87,60 +95,17 @@ public class RecipeVideoFragment extends Fragment {
         releasePlayer();
     }
 
-    @Override
-    public void onStart(){
-        super.onStart();
-        if(!isLandscapeMode) {
-            nextStepImageView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(recipeStepIndex>=numSteps){
-                        //show user that at the last step of recipe
-                        Toast.makeText(getContext(),"Recipe completed",Toast.LENGTH_LONG).show();
-                    }
-                    else{
-                        recipeStepIndex++;
-                        player=null;
-                        setDescriptionContent();
-                    }
-                }
-            });
-
-            prevStepImageView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(recipeStepIndex==0){
-                        Toast.makeText(getContext(),"At first step",Toast.LENGTH_LONG).show();
-                    }
-                    else{
-                        recipeStepIndex--;
-                        player=null;
-                        setDescriptionContent();
-                    }
-                }
-            });
-        }
-    }
-
     private void setDescriptionContent(){
-        currentStep = recipeSteps.get(recipeStepIndex);
         if(!currentStep.getVideoURL().isEmpty()) initializePlayer(Uri.parse(currentStep.getVideoURL()));
         else {
             Toast.makeText(getContext(),"No video found",Toast.LENGTH_LONG).show();
             player = null;
             initializePlayer(Uri.parse(currentStep.getVideoURL()));
         }
-        //implies that phone in landscape mode
-        if(view.findViewById(R.id.video_landscape_mode)!=null){
-            isLandscapeMode = true;
-        }
-        else{
-            isLandscapeMode = false;
-            stepDescriptionTextView = view.findViewById(R.id.step_instruction_textview);
-            stepDescriptionTextView.setText("");
-            stepDescriptionTextView.append(currentStep.getDescription());
-            nextStepImageView = view.findViewById(R.id.next_step_imageView);
-            prevStepImageView = view.findViewById(R.id.prev_step_imageView);
-        }
+    }
+
+    public void setMediaPlayer(){
+        currentStep = recipeSteps.get(0);
+        initializePlayer(Uri.parse(currentStep.getVideoURL()));
     }
 }

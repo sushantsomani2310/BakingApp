@@ -1,4 +1,4 @@
-package com.example.bakingapp.views.fragment;
+package com.example.bakingapp.views.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,18 +21,21 @@ import com.example.bakingapp.views.RecipeVideoActivity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RecipeDetailFragment extends Fragment implements RecipeStepsAdapter.StepSelectItemListener {
+/**
+ * this fragment shows layout of recipe step details
+ * this does not include recipe video and specific step instruction
+ */
+public class RecipeStepsFragment extends Fragment implements RecipeStepsAdapter.StepSelectItemListener{
 
     private RecyclerView stepsRecyclerView;
     private TextView ingredientsTextView;
     private RecipeStepsAdapter recipeStepsAdapter;
-    public RecipeDetailFragment(){
+    public RecipeStepsFragment(){
 
     }
-
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater,ViewGroup container,Bundle bundle){
-        View view = inflater.inflate(R.layout.recipe_detail_fragment,container,false);
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle bundle){
+        View view = inflater.inflate(R.layout.recipe_step_detail,container,false);
 
         Intent recipeIntent = getActivity().getIntent();
         Recipe selectedRecipe = (Recipe)recipeIntent.getSerializableExtra("RECIPE_DETAILS");
@@ -63,7 +66,7 @@ public class RecipeDetailFragment extends Fragment implements RecipeStepsAdapter
     }
 
     @Override
-    public void onStepSelectedListener(List<RecipeSteps> recipeSteps,int stepIndex) {
+    public void onStepSelectedListener(List<RecipeSteps> recipeSteps, int stepIndex) {
         Intent videoIntent = new Intent(getActivity(), RecipeVideoActivity.class);
         videoIntent.putExtra("RECIPE_STEPS_LIST",(ArrayList<RecipeSteps>)recipeSteps);
         videoIntent.putExtra("RECIPE_STEP_INDEX",stepIndex);

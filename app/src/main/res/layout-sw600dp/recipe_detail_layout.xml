@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/recipe_detail_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:layout_width="match_parent">
+<!--Contains layout of recipe steps-->
+<fragment
+    android:name="com.example.bakingapp.views.fragments.RecipeStepsFragment"
+    android:id="@+id/recipe_detail_steps_fragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"/>
+
+    <!--A small divider-->
+    <View
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:background="@android:color/darker_gray"/>
+
+    <LinearLayout
+        android:id="@+id/recipe_video_tablet_pane"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical">
+
+
+        <FrameLayout
+            android:id="@+id/video_container"
+            android:layout_width="match_parent"
+            android:layout_height="240dp"
+            android:scaleType="centerInside"/>
+
+        <FrameLayout
+            android:id="@+id/description_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="centerInside"/>
+    </LinearLayout>
+
+</LinearLayout>

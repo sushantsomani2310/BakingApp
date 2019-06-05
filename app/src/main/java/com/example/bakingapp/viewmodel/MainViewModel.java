@@ -3,7 +3,7 @@ package com.example.bakingapp.viewmodel;
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 
-import com.example.bakingapp.BakingRepository;
+import com.example.bakingapp.utility.BakingRepository;
 import com.example.bakingapp.datasource.RecipeData;
 
 public class MainViewModel extends AndroidViewModel {
