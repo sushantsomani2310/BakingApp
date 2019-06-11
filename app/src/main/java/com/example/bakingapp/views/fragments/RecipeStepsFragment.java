@@ -30,20 +30,16 @@ public class RecipeStepsFragment extends Fragment implements RecipeStepsAdapter.
     private RecyclerView stepsRecyclerView;
     private TextView ingredientsTextView;
     private RecipeStepsAdapter recipeStepsAdapter;
+    private boolean isMultiPane = false;
+    private List<RecipeSteps> recipeStepsList;
+    private Recipe selectedRecipe;
+
     public RecipeStepsFragment(){
 
     }
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle bundle){
-        View view = inflater.inflate(R.layout.recipe_step_detail,container,false);
 
-        Intent recipeIntent = getActivity().getIntent();
-        Recipe selectedRecipe = (Recipe)recipeIntent.getSerializableExtra("RECIPE_DETAILS");
-        List<RecipeSteps> recipeStepsList = selectedRecipe.getRecipeSteps();
-
-        stepsRecyclerView=(RecyclerView)view.findViewById(R.id.recipe_steps_recyclerview);
-        ingredientsTextView=(TextView)view.findViewById(R.id.ingredients_textView);
-        recipeStepsAdapter = new RecipeStepsAdapter(this);
+    public void setIsMultiPane(boolean isMultiPane){
+        recipeStepsAdapter = new RecipeStepsAdapter(this,isMultiPane);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
         stepsRecyclerView.setLayoutManager(layoutManager);
         stepsRecyclerView.setAdapter(recipeStepsAdapter);
@@ -61,7 +57,16 @@ public class RecipeStepsFragment extends Fragment implements RecipeStepsAdapter.
                         ingredientsList.get(i).getMeasure()+", ");
             }
         }
+    }
 
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle bundle){
+        View view = inflater.inflate(R.layout.recipe_step_detail,container,false);
+        Intent recipeIntent = getActivity().getIntent();
+        selectedRecipe = (Recipe)recipeIntent.getSerializableExtra("RECIPE_DETAILS");
+        recipeStepsList = selectedRecipe.getRecipeSteps();
+        stepsRecyclerView=(RecyclerView)view.findViewById(R.id.recipe_steps_recyclerview);
+        ingredientsTextView=(TextView)view.findViewById(R.id.ingredients_textView);
         return view;
     }
 
