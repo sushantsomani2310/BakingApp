@@ -31,8 +31,11 @@ public class RecipeDetailActivity extends AppCompatActivity {
 
     private void createTabletLayout(Bundle onSavedInstanceState){
         RecipeVideoStepFragment videoStepFragment = new RecipeVideoStepFragment();
-        //videoStepFragment.setMediaPlayer();
+        Bundle fragmentBundle = new Bundle();
+        fragmentBundle.putBoolean("isMultiPane",isMultiPane);
+        videoStepFragment.setArguments(fragmentBundle);
         FragmentManager fragmentManager = getSupportFragmentManager();
+
         fragmentManager.beginTransaction()
                 .add(R.id.video_container,videoStepFragment)
                 .commit();
