@@ -36,11 +36,19 @@ public class RecipeVideoStepFragment extends Fragment {
     private int recipeStepIndex,numSteps;
     private List<RecipeSteps> recipeSteps;
     private RecipeSteps currentStep;
+    private boolean isMultiPane;
 
     public RecipeVideoStepFragment(){
 
     }
 
+     @Override
+    public void onCreate(Bundle bundle){
+        super.onCreate(bundle);
+        bundle = this.getArguments();
+        isMultiPane = bundle.getBoolean("isMultiPane",false);
+    }
+    
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle bundle){
         View view = inflater.inflate(R.layout.exo_player_solo,container,false);
