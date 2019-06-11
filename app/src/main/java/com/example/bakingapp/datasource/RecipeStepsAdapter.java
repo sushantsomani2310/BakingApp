@@ -15,13 +15,15 @@ import java.util.List;
 public class RecipeStepsAdapter extends RecyclerView.Adapter<RecipeStepsAdapter.RecipeStepsViewHolder> {
 
     private StepSelectItemListener selectItemListener;
+    private boolean isMultiPane;
 
     public interface StepSelectItemListener{
         void onStepSelectedListener(List<RecipeSteps> recipeSteps, int stepIndex);
     }
 
-    public RecipeStepsAdapter(StepSelectItemListener selectItemListener){
-        this.selectItemListener=selectItemListener;
+   public RecipeStepsAdapter(StepSelectItemListener selectItemListener,boolean isMultiPane) {
+        this.selectItemListener = selectItemListener;
+        this.isMultiPane=isMultiPane;
     }
 
     private List<RecipeSteps> recipeSteps;
