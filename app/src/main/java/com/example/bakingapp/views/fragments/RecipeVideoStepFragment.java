@@ -36,17 +36,9 @@ public class RecipeVideoStepFragment extends Fragment {
     private int recipeStepIndex,numSteps;
     private List<RecipeSteps> recipeSteps;
     private RecipeSteps currentStep;
-    private boolean isMultiPane;
 
     public RecipeVideoStepFragment(){
 
-    }
-
-     @Override
-    public void onCreate(Bundle bundle){
-        super.onCreate(bundle);
-        bundle = this.getArguments();
-        isMultiPane = bundle.getBoolean("isMultiPane",false);
     }
     
     @Override
