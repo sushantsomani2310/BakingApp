@@ -1,5 +1,6 @@
 package com.example.bakingapp.views.fragments;
 
+import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -36,17 +37,14 @@ public class RecipeVideoStepFragment extends Fragment {
     private int recipeStepIndex,numSteps;
     private List<RecipeSteps> recipeSteps;
     private RecipeSteps currentStep;
-
     public RecipeVideoStepFragment(){
 
     }
-    
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle bundle){
         View view = inflater.inflate(R.layout.exo_player_solo,container,false);
-
         playerView = view.findViewById(R.id.playerView2);
-
         recipeSteps = (ArrayList<RecipeSteps>)getActivity().getIntent().getSerializableExtra("RECIPE_STEPS_LIST");
         recipeStepIndex = getActivity().getIntent().getIntExtra("RECIPE_STEP_INDEX",1);
 
@@ -55,8 +53,11 @@ public class RecipeVideoStepFragment extends Fragment {
         if(null==recipeSteps) {
             recipeSteps = selectedRecipe.getRecipeSteps();
         }
-        currentStep = recipeSteps.get(recipeStepIndex);
-        //numSteps = recipeSteps.size();
+
+        if(getArguments()!=null) {
+            currentStep = (RecipeSteps) getArguments().getSerializable("RecipeStep");
+        }
+        else currentStep = recipeSteps.get(recipeStepIndex);
         setDescriptionContent();
         return view;
     }
@@ -102,10 +103,5 @@ public class RecipeVideoStepFragment extends Fragment {
             player = null;
             initializePlayer(Uri.parse(currentStep.getVideoURL()));
         }
-    }
-
-    public void setMediaPlayer(){
-        currentStep = recipeSteps.get(0);
-        initializePlayer(Uri.parse(currentStep.getVideoURL()));
     }
 }

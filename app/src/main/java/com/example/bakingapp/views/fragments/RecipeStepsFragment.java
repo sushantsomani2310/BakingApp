@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -72,9 +73,34 @@ public class RecipeStepsFragment extends Fragment implements RecipeStepsAdapter.
 
     @Override
     public void onStepSelectedListener(List<RecipeSteps> recipeSteps, int stepIndex) {
-        Intent videoIntent = new Intent(getActivity(), RecipeVideoActivity.class);
-        videoIntent.putExtra("RECIPE_STEPS_LIST",(ArrayList<RecipeSteps>)recipeSteps);
-        videoIntent.putExtra("RECIPE_STEP_INDEX",stepIndex);
-        startActivity(videoIntent);
+        if(!isMultiPane) {
+            Intent videoIntent = new Intent(getActivity(), RecipeVideoActivity.class);
+            videoIntent.putExtra("RECIPE_STEPS_LIST", (ArrayList<RecipeSteps>) recipeSteps);
+            videoIntent.putExtra("RECIPE_STEP_INDEX", stepIndex);
+            startActivity(videoIntent);
+        }
+        else {
+            RecipeVideoStepFragment videoStepFragment = new RecipeVideoStepFragment();
+            Bundle stepBundle = new Bundle();
+            stepBundle.putSerializable("RecipeStep",recipeSteps.get(stepIndex));
+            videoStepFragment.setArguments(stepBundle);
+
+            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.video_container,videoStepFragment)
+                    .commit();
+
+            RecipeDescriptionFragment descriptionFragment = new RecipeDescriptionFragment();
+            Bundle descBundle=new Bundle();
+            descBundle.putString("StepDesc",(recipeSteps.get(stepIndex).getDescription()));
+            descriptionFragment.setArguments(descBundle);
+            fragmentManager.beginTransaction()
+                    .replace(R.id.description_container,descriptionFragment)
+                    .commit();
+        }
+    }
+
+    public void setMultiPane(boolean isMultiPane){
+        this.isMultiPane=isMultiPane;
     }
 }

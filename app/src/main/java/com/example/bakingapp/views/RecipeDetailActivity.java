@@ -32,6 +32,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
         if(findViewById(R.id.recipe_video_tablet_pane)!=null){
             // make tablet layout
             isMultiPane = true;
+            stepFrag.setMultiPane(true);
             createTabletLayout(onSavedInstanceState);
         }
         else stepFrag.setIsMultiPane(false);
