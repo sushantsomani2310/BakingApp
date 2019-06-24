@@ -104,4 +104,27 @@ public class RecipeVideoStepFragment extends Fragment {
             initializePlayer(Uri.parse(currentStep.getVideoURL()));
         }
     }
+
+    @Override
+    public void onPause(){
+        super.onPause();
+        //Pause the exoplayer
+        pausePlayer();
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        //Start the exoplayer
+        startPlayer();
+    }
+
+    private void pausePlayer(){
+        player.setPlayWhenReady(false);
+        player.getPlaybackState();
+    }
+    private void startPlayer(){
+        player.setPlayWhenReady(true);
+        player.getPlaybackState();
+    }
 }
