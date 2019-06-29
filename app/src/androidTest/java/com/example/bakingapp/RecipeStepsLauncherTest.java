@@ -42,12 +42,11 @@ public class RecipeStepsLauncherTest {
     public void tapRecipeItem(){
         try {
             //onView(allOf(withId(R.id.recipe_name_textview), withText("Yellow Cake"))).check(matches(isDisplayed()));
-            onData(allOf(withId(R.id.recipe_name_textview), withText("Brownies"))).check(matches(isDisplayed())).perform(click());
-            int sdf = 45;
+            onView(allOf(withId(R.id.recipe_name_textview), withText("Brownies"))).check(matches(isDisplayed())).perform(click());
+            
             // onData(anything()).inAdapterView(withId(R.id.tea_grid_view)).atPosition(1).perform(click());
         }
         catch (Exception ex){
-            int sfsd= 34;
         }
     }
 }
