@@ -7,6 +7,12 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
+import androidx.test.espresso.IdlingResource;
+
+import com.example.bakingapp.BakingIdleResource;
 import com.example.bakingapp.R;
 import com.example.bakingapp.datasource.RecipeAdapter;
 import com.example.bakingapp.datasource.RecipeData;
@@ -20,6 +26,9 @@ public class MainActivity extends AppCompatActivity implements RecipeData.Recipe
     private RecyclerView recipeRecyclerView;
     private RecipeAdapter recipeAdapter;
     private MainViewModel mainViewModel;
+
+    @Nullable
+    private BakingIdleResource bakingIdleResource;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,5 +60,12 @@ public class MainActivity extends AppCompatActivity implements RecipeData.Recipe
     @Override
     public void onRecipeFetchError(String errorMessage) {
 
+    }
+
+    @VisibleForTesting
+    @NonNull
+    public IdlingResource getIdlingResource(){
+        if(bakingIdleResource==null) bakingIdleResource = new BakingIdleResource();
+        return bakingIdleResource;
     }
 }

@@ -1,5 +1,6 @@
 package com.example.bakingapp;
 
+import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
 
 import static androidx.test.espresso.Espresso.onData;
@@ -16,38 +17,58 @@ import static org.hamcrest.Matchers.startsWith;
 import static org.hamcrest.core.AllOf.allOf;
 import static org.junit.Assert.assertEquals;
 
+import androidx.test.core.app.ActivityScenario;
+import androidx.test.espresso.IdlingRegistry;
+import androidx.test.espresso.IdlingResource;
 import androidx.test.espresso.ViewAction;
 import androidx.test.espresso.ViewAction.*;
 import androidx.test.espresso.ViewInteraction;
 import androidx.test.espresso.action.ViewActions;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
-import androidx.test.rule.ActivityTestRule;
 
 import com.example.bakingapp.views.MainActivity;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import androidx.test.espresso.contrib.RecyclerViewActions;
-import androidx.test.espresso.matcher.ViewMatchers;
-
 @RunWith(AndroidJUnit4.class)
 public class RecipeStepsLauncherTest {
 
-    @Rule
-    public ActivityTestRule<MainActivity> mainActivityActivityTestRule = new ActivityTestRule<>(MainActivity.class);
+    //@Rule
+    //public ActivityTestRule<MainActivity> mainActivityActivityTestRule = new ActivityTestRule<>(MainActivity.class);
+
+    private IdlingResource idlingResource;
+
+    @Before
+    public void registerIdlingResource(){
+        ActivityScenario activityScenario = ActivityScenario.launch(MainActivity.class);
+        activityScenario.onActivity(new ActivityScenario.ActivityAction<MainActivity>() {
+            @Override
+            public void perform(MainActivity activity) {
+                idlingResource = activity.getIdlingResource();
+                IdlingRegistry.getInstance().register(idlingResource);
+            }
+        });
+    }
 
     @Test
     public void tapRecipeItem(){
         try {
             //onView(allOf(withId(R.id.recipe_name_textview), withText("Yellow Cake"))).check(matches(isDisplayed()));
-            onData(allOf(withId(R.id.recipe_name_textview), withText("Brownies"))).check(matches(isDisplayed())).perform(click());
-            int sdf = 45;
+            onView(allOf(withId(R.id.recipe_name_textview), withText("Brownies"))).check(matches(isDisplayed())).perform(click());
+            int sdf=45;
             // onData(anything()).inAdapterView(withId(R.id.tea_grid_view)).atPosition(1).perform(click());
         }
         catch (Exception ex){
-            int sfsd= 34;
+            int sdf=45;
         }
+    }
+
+    @After
+    public void unregisterIdlingResource(){
+        if(idlingResource!=null) IdlingRegistry.getInstance().unregister(idlingResource);
     }
 }
