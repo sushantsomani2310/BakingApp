@@ -64,6 +64,8 @@ public class RecipeStepsLauncherTest {
         }
         catch (Exception ex){
             int sdf=45;
+
+            // onData(anything()).inAdapterView(withId(R.id.tea_grid_view)).atPosition(1).perform(click());
         }
     }
 
