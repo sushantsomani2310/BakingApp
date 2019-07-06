@@ -1,5 +1,7 @@
 package com.example.bakingapp.views;
 
+import android.arch.lifecycle.ViewModel;
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -12,6 +14,8 @@ import android.widget.TextView;
 
 import com.example.bakingapp.R;
 import com.example.bakingapp.datasource.RecipeStepsAdapter;
+import com.example.bakingapp.models.Recipe;
+import com.example.bakingapp.viewmodel.RecipeDetailViewModel;
 import com.example.bakingapp.views.fragments.RecipeStepsFragment;
 import com.example.bakingapp.views.fragments.RecipeVideoStepFragment;
 
@@ -23,12 +27,16 @@ public class RecipeDetailActivity extends AppCompatActivity {
     private boolean isMultiPane = false;
     private FragmentManager fragmentManager;
     private RecipeStepsFragment stepFrag;
+    private Recipe selectedRecipe;
+    private RecipeDetailViewModel recipeDetailViewModel;
 
     @Override
     protected void onCreate(Bundle onSavedInstanceState){
         super.onCreate(onSavedInstanceState);
         setContentView(R.layout.recipe_detail_layout);
 
+        //initialize view model
+        recipeDetailViewModel = ViewModelProviders.of(this).get(RecipeDetailViewModel.class);
         fragmentManager = getSupportFragmentManager();
         stepFrag = (RecipeStepsFragment) fragmentManager.findFragmentById(R.id.recipe_detail_steps_fragment);
 
@@ -39,14 +47,13 @@ public class RecipeDetailActivity extends AppCompatActivity {
             createTabletLayout(onSavedInstanceState);
         }
         else stepFrag.setIsMultiPane(false);
+
+        //fetch intent to get selected Recipe
+        selectedRecipe = (Recipe)getIntent().getSerializableExtra("RECIPE_DETAILS");
     }
 
     private void createTabletLayout(Bundle onSavedInstanceState){
         RecipeVideoStepFragment videoStepFragment = new RecipeVideoStepFragment();
-        //Bundle fragmentBundle = new Bundle();
-        //fragmentBundle.putBoolean("isMultiPane",isMultiPane);
-        //videoStepFragment.setArguments(fragmentBundle);
-
         stepFrag.setIsMultiPane(true);
 
         fragmentManager.beginTransaction()
@@ -66,6 +73,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
         int selectedItem = item.getItemId();
         switch (selectedItem){
             case R.id.set_desirable :
+                recipeDetailViewModel.setDesirableRecipeIngredients(selectedRecipe.getIngredients());
                 break;
         }
         return true;
