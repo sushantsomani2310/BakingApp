@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">Baking App</string>
     <string name="set_desirable">Set desirable</string>
+    <string name="appwidget_text">Desiralbe recipe ingredients</string>
+    <string name="add_widget">Add widget</string>
 </resources>
