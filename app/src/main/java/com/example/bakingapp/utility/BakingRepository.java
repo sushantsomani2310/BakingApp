@@ -1,5 +1,6 @@
 package com.example.bakingapp.utility;
 
+import android.arch.lifecycle.LiveData;
 import android.content.Context;
 
 import com.example.bakingapp.datasource.BakingAppRoomDatabase;
@@ -52,7 +53,7 @@ public class BakingRepository {
         RecipeData.setDesirableRecipeIngredients(ingredients,context);
     }
 
-    public void getDesirableRecipeIngredients(){
-        RecipeData.getDesirableRecipeIngredients(context);
+    public List<Ingredients> getDesirableRecipeIngredients(){
+        return RecipeData.getDesirableRecipeIngredients(context);
     }
 }
