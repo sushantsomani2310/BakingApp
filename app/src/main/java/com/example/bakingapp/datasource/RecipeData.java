@@ -73,15 +73,9 @@ public class RecipeData {
      * reads the ingredients of favourite recipe from room db
      * @param context need to refer to RoomDB instance
      */
-    public static void getDesirableRecipeIngredients(Context context){
+    public static List<Ingredients> getDesirableRecipeIngredients(Context context){
         final BakingAppRoomDatabase roomDatabase = BakingAppRoomDatabase.getInstance(context);
-        AppExecutors appExecutors = AppExecutors.getInstance();
-        appExecutors.diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                DesirableRecipeDao desirableRecipeDao = roomDatabase.getDesirableRecipe();
-                List<Ingredients> desirableIngredients = desirableRecipeDao.getDesirableRecipe();
-            }
-        });
+        DesirableRecipeDao desirableRecipeDao = roomDatabase.getDesirableRecipe();
+        return desirableRecipeDao.getDesirableRecipe();
     }
 }
