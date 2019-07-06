@@ -1,8 +1,12 @@
 package com.example.bakingapp.datasource;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 
+import com.example.bakingapp.datasource.dao.DesirableRecipeDao;
+import com.example.bakingapp.models.Ingredients;
 import com.example.bakingapp.models.Recipe;
+import com.example.bakingapp.utility.AppExecutors;
 
 import java.util.List;
 
@@ -45,4 +49,39 @@ public class RecipeData {
         });
     }
 
+    /**
+     * sets the ingredients of favourite recipe item in room database
+     * @param ingredients of favourite recipe
+     * @param context need to refer to RoomDB instance
+     */
+    public static void setDesirableRecipeIngredients(final List<Ingredients> ingredients, Context context){
+        final BakingAppRoomDatabase roomDatabase = BakingAppRoomDatabase.getInstance(context);
+        AppExecutors appExecutors = AppExecutors.getInstance();
+        appExecutors.diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                //delete old data from table
+                DesirableRecipeDao desirableRecipeDao = roomDatabase.getDesirableRecipe();
+                desirableRecipeDao.clearDesirableRecipe();
+                //insert new list of ingredients in the table
+                desirableRecipeDao.insertDesirableRecipe(ingredients);
+            }
+        });
+    }
+
+    /**
+     * reads the ingredients of favourite recipe from room db
+     * @param context need to refer to RoomDB instance
+     */
+    public static void getDesirableRecipeIngredients(Context context){
+        final BakingAppRoomDatabase roomDatabase = BakingAppRoomDatabase.getInstance(context);
+        AppExecutors appExecutors = AppExecutors.getInstance();
+        appExecutors.diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                DesirableRecipeDao desirableRecipeDao = roomDatabase.getDesirableRecipe();
+                List<Ingredients> desirableIngredients = desirableRecipeDao.getDesirableRecipe();
+            }
+        });
+    }
 }
