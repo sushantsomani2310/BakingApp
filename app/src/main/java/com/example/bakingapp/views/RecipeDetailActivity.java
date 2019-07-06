@@ -5,6 +5,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.example.bakingapp.R;
@@ -49,5 +52,22 @@ public class RecipeDetailActivity extends AppCompatActivity {
         fragmentManager.beginTransaction()
                 .add(R.id.video_container,videoStepFragment)
                 .commit();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.set_desirable_menu,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        int selectedItem = item.getItemId();
+        switch (selectedItem){
+            case R.id.set_desirable :
+                break;
+        }
+        return true;
     }
 }

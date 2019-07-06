@@ -48,7 +48,7 @@ public class RecipeStepsLauncherTest {
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
 
     @Before
-    public void registerIdlingResource(){
+    public void registerIdlingResource() {
         ActivityScenario activityScenario = ActivityScenario.launch(MainActivity.class);
         activityScenario.onActivity(new ActivityScenario.ActivityAction<MainActivity>() {
             @Override
@@ -61,18 +61,13 @@ public class RecipeStepsLauncherTest {
     }
 
     @Test
-    public void tapRecipeItem(){
-        try {
-            onView(allOf(withId(R.id.recipe_name_textview), withText("Yellow Cake"))).check(matches(isDisplayed())).perform(click());
-        }
-        catch (Exception ex){
-            int sdf=45;
+    public void tapRecipeItem() {
+        onView(allOf(withId(R.id.recipe_name_textview), withText("Yellow Cake"))).check(matches(isDisplayed())).perform(click());
 
-        }
     }
 
     @After
-    public void unregisterIdlingResource(){
-        if(idlingResource!=null) IdlingRegistry.getInstance().unregister(idlingResource);
+    public void unregisterIdlingResource() {
+        if (idlingResource != null) IdlingRegistry.getInstance().unregister(idlingResource);
     }
 }
