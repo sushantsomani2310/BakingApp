@@ -2,17 +2,26 @@ package com.example.bakingapp.utility;
 
 import android.content.Context;
 
+import com.example.bakingapp.datasource.BakingAppRoomDatabase;
 import com.example.bakingapp.datasource.RecipeData;
+import com.example.bakingapp.datasource.dao.DesirableRecipeDao;
+import com.example.bakingapp.models.Ingredients;
+import com.example.bakingapp.models.Recipe;
+
+import java.util.List;
 
 public class BakingRepository {
 
     private Context context;
-
+    private List<Ingredients> desirableIngredients;
+    private DesirableRecipeDao desirableRecipeDao;
     //singleton object of repository
     private static Object LOCK =new Object();
     private static BakingRepository sInstance;
 
     private BakingRepository(Context context){
+        BakingAppRoomDatabase roomDatabase = BakingAppRoomDatabase.getInstance(context);
+        desirableRecipeDao = roomDatabase.getDesirableRecipe();
         this.context = context;
     }
 
@@ -33,5 +42,17 @@ public class BakingRepository {
      */
     public void fetchRecipeData(RecipeData.RecipeDataResponseListener responseListener){
         RecipeData.getRecipeData(responseListener);
+    }
+
+    /**
+     * sets the desirable recipe ingredients in the room database
+     * @param ingredients value to be inserted in room database
+     */
+    public void setDesirableRecipeIngredients(final List<Ingredients> ingredients){
+        RecipeData.setDesirableRecipeIngredients(ingredients,context);
+    }
+
+    public void getDesirableRecipeIngredients(){
+        RecipeData.getDesirableRecipeIngredients(context);
     }
 }
