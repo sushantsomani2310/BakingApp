@@ -16,6 +16,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    compileOptions{
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
     dataBinding.enabled = true
     useLibrary 'android.test.runner'
 
@@ -34,9 +39,11 @@ dependencies {
     implementation "android.arch.lifecycle:extensions:1.1.1"
     implementation 'com.google.android.exoplayer:exoplayer:r2.2.0'
     annotationProcessor "android.arch.lifecycle:compiler:1.1.1"
-
     implementation 'androidx.test.espresso:espresso-idling-resource:3.3.0-alpha01'
 
+    //room database
+    annotationProcessor 'android.arch.persistence.room:compiler:1.1.1'
+    implementation 'android.arch.persistence.room:runtime:1.1.1'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
